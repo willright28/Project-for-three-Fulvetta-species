@@ -43,13 +43,13 @@ Scripts for Zhang et al. (2025): *Interspecific introgression mitigates climate 
 
 ## 6. Allele Frequency Shift Analysis
 
-- **6_Allele_frequency_shifts_analysis.R**: Models the rate of allele frequency change under future climate scenarios.
+- **Allele_frequency_shifts_analysis.R**: Models the rate of allele frequency change under future climate scenarios.
 
 ---
 
 ## 7. Genetic Offset Analysis
 
-- **7_Genetic_offset_analysis.R**: Calculates genetic offset using two methods: gradient forest and geometric offset approaches.
+- **Genetic_offset_analysis.R**: Calculates genetic offset using two methods: gradient forest and geometric offset approaches.
 
 ---
 
