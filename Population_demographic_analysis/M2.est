@@ -1,0 +1,24 @@
+// Priors and rules file
+// *********************
+
+[PARAMETERS]
+//#isInt? #name   #dist.#min  #max
+//all Ns are in number of haploid individuals
+1  Nhueti$		unif	1000	 1000000	 output
+1  Ndavidi$		unif	1000	 1000000	 output
+1  Nfratercula$		unif	1000	 1000000	 output
+1  Nanc_all$ 	unif	1000	 1000000	 output
+1  Nanc_EC$ 	unif	1000	 1000000	 output
+1  Tdiv_EC$	unif 10000	 1000000	 output
+0  Prop_div$	unif 1.10	 10.00	 output
+0  Prop_1$	logunif 0.1	 0.6	 output
+0  MIG01$   logunif 	0.00001 0.001   output
+0  MIG10$   logunif 	0.00001 0.001   output
+0  MIG12$   logunif	 0.00001 0.001   output
+0  MIG21$   logunif	 0.00001 0.001   output
+
+[COMPLEX PARAMETERS]
+0  RES_EC$ = Nanc_EC$/Ndavidi$		 hide
+0  RES_WC$ = Nanc_all$/Nfratercula$		 hide
+0  Tm1 = Tdiv_EC$*Prop_1$		 output
+1  Tdiv_WC$ = Prop_div$*Tdiv_EC$	 output
