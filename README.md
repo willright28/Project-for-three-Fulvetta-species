@@ -60,3 +60,10 @@ Scripts for Zhang et al. (2025): *Interspecific introgression mitigates climate 
 - **slim_geneflow_model.sh**: SLiM simulation script allowing interspecific gene flow.
 - **slim_none_geneflow_model.sh**: SLiM simulation script prohibiting interspecific gene flow.
 
+---
+
+## 9. Landscape connectivity analysis
+
+- **Landscape_connectivity_analysis.R**: Tests a set of alternative hypotheses regarding landscape 
+connectivity
+
