@@ -3,6 +3,10 @@
 Scripts for Zhang et al. (2025): *Interspecific introgression mitigates climate change risk of the mountainous birds*
 
 ---
+## 0. SNP calling and filtering
+- **Snp_calling.sh**: code for calling snp
+- **Vcf_filtering.sh**: code for filtering vcf
+---
 
 ## 1. Genetic Structure Analysis
 
@@ -20,40 +24,55 @@ Scripts for Zhang et al. (2025): *Interspecific introgression mitigates climate 
 
 ---
 
-## 3. Introgression Analysis
+## 3. PSMC
+
+- **PSMC.sh**
+
+
+---
+
+## 4. Hybrid test
+
+- **HyDe.sh**
+- **gghybrid.R**
+- **triangulaR.R**
+
+---
+
+## 4. Introgression Analysis
 
 - **msmove_sim.sh**: Generates training data through coalescent simulations using parameters inferred from Fastsimcoal2.
 - **FILET.sh**: Identifies introgressed genomic regions using FILET.
 
 ---
 
-## 4. Ecological Analysis
+## 6. Ecological Analysis
 
 - **Niche_divergence_test_analysis.R**: Evaluates ecological niche similarity between species.
 - **Ecological_niche_models_analysis.R**: Predicts species distribution areas using ensemble ecological niche models.
 
 ---
 
-## 5. Genotype–Climate Association Analysis
+## 7. Genotype–Climate Association Analysis
 
 - **LFMM2.r**: Identifies SNPs associated with climatic variables using LFMM2.
 - **RDA.r**: Identifies SNP–environment associations using redundancy analysis (RDA).
 
 ---
 
-## 6. Allele Frequency Shift Analysis
+## 8. Alleleshift
 
 - **Allele_frequency_shifts_analysis.R**: Models the rate of allele frequency change under future climate scenarios.
 
 ---
 
-## 7. Genetic Offset Analysis
+## 9. Genetic Offset Analysis
 
 - **Genetic_offset_analysis.R**: Calculates genetic offset using two methods: gradient forest and geometric offset approaches.
 
 ---
 
-## 8. SLiM4 Simulation Analysis
+## 10. SLiM4 Simulation Analysis
 
 - **mig.txt**: Migration matrix derived from Fastsimcoal2 demographic inference.
 - **env_example_data.txt**: Linear climate change input used to simulate future warming.
@@ -62,8 +81,10 @@ Scripts for Zhang et al. (2025): *Interspecific introgression mitigates climate 
 
 ---
 
-## 9. Landscape connectivity analysis
+## 11. Landscape connectivity analysis
 
 - **Landscape_connectivity_analysis.R**: Tests a set of alternative hypotheses regarding landscape 
 connectivity
 
+## 12. Selscan
+- **Selscan.sh**: Tests adaptive introgression signals
