@@ -8,9 +8,10 @@ set -o pipefail
 min_dp=8
 max_dp=60
 
-#######################base 
-#plink2 --vcf /disk3/hkqm/call_snp/vcf96/htcw.bcftools.raw.out.vcf.gz -aec --geno 0.1 --vcf-min-dp  8 --vcf-max-dp 60 --min-alleles 1 --max-alleles 1 --var-min-qual 30  --export vcf-4.2  --out /disk3/hkqm/call_snp/plink/hkqm.8.60.mono
-#plink2 --vcf /disk3/hkqm/call_snp/vcf96/htcw.bcftools.raw.out.vcf.gz -aec --geno 0.1 --vcf-min-dp  8 --vcf-max-dp 60 --min-alleles 2  --max-alleles 2 --var-min-qual 30 --export vcf-4.2  --out /disk3/hkqm/call_snp/plink/hkqm.6.60
+###
+plink2 --vcf /disk3/call_snp/bcftools.raw.out.vcf.gz -aec --geno 0.1 --vcf-min-dp  8 --vcf-max-dp 60 --min-alleles 1 --max-alleles 1 --var-min-qual 30  --export vcf-4.2  --out /disk3/hkqm/call_snp/plink/hkqm.8.60.mono
+###
+plink2 --vcf /disk3/call_snp/bcftools.raw.out.vcf.gz -aec --geno 0.1 --vcf-min-dp  8 --vcf-max-dp 60 --min-alleles 2  --max-alleles 2 --var-min-qual 30 --export vcf-4.2  --out /disk3/hkqm/call_snp/plink/hkqm.6.60
 
 #indels gap 
 #bcftools filter /disk3/hkqm/call_snp/plink/hkqm.${min_dp}.${max_dp}.vcf --SnpGap 5 --threads 70 -Oz -o /disk3/hkqm/call_snp/plink/hkqm.${min_dp}.${max_dp}.gap.vcf.gz
