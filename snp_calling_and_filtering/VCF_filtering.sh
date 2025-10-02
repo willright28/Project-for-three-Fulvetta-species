@@ -25,8 +25,8 @@ plink2  --vcf /disk3/call_snp/plink/hkqm.${min_dp}.${max_dp}.gap.snponly.vcf --a
 plink2 --vcf /disk3/call_snp/plink/vcf71.${min_dp}.${max_dp}.vcf --aec --maf 0.05  --export vcf-4.2 --out /disk3/call_snp/plink/vcf71.${min_dp}.${max_dp}.maf.0.05
 
 #LD
-plink2 --vcf /disk3/call_snp/plink/vcf71.${min_dp}.${max_dp}.maf.0.05.vcf --allow-extra-chr --set-all-var-ids @:#  --indep-pairwise 50 10 0.1  --out /disk3/call_snp/plink/vcf71.8.60.maf.0.05.ld
-plink2 --vcf /disk3/call_snp/plink/vcf71.${min_dp}.${max_dp}.maf.0.05.vcf --allow-extra-chr --set-all-var-ids @:# --rm-dup force-first --extract /disk3/call_snp/plink/vcf71.8.60.maf.0.05.ld.prune.in --recode vcf-4.2 --out /disk3/call_snp/plink/vcf71.8.60.maf.0.05.ld
+plink2 --vcf /disk3/call_snp/plink/vcf71.${min_dp}.${max_dp}.maf.0.05.vcf --allow-extra-chr --set-all-var-ids @:#  --indep-pairwise 50 10 0.1  --out /disk3/call_snp/plink/vcf71.${min_dp}.${max_dp}.maf.0.05.ld
+plink2 --vcf /disk3/call_snp/plink/vcf71.${min_dp}.${max_dp}.maf.0.05.vcf --allow-extra-chr --set-all-var-ids @:# --rm-dup force-first --extract /disk3/call_snp/plink/vcf71.8.60.maf.0.05.ld.prune.in --recode vcf-4.2 --out /disk3/call_snp/plink/vcf71.${min_dp}.${max_dp}.maf.0.05.ld
 
 #####################
 #filtering for genotype-environment association analysis
@@ -45,8 +45,8 @@ plink2 --vcf  /disk3/call_snp/plink/vcf81.${min_dp}.${max_dp}.vcf --allow-extra-
 
 #maf 0.05 
 #plink2 --vcf  /disk3/call_snp/plink/vcf81.${min_dp}.${max_dp}.vcf --aec --maf 0.05 --export vcf-4.2  --out/disk3/call_snp/plink/vcf81.${min_dp}.${max_dp}.maf.0.05
-plink2 --vcf  /disk3/call_snp/plink/vcf81.8.60.maf.0.05.vcf --allow-extra-chr --set-all-var-ids @:#  --indep-pairwise 50 10 0.1  --out /disk3/call_snp/plink/vcf81.8.60.maf.0.05.ld
-plink2 --vcf /disk3/call_snp/plink/vcf81.8.60.maf.0.05.vcf --allow-extra-chr --set-all-var-ids @:# --rm-dup force-first --extract /disk3/call_snp/plink/vcf81.8.60.maf.0.05.ld.prune.in --recode vcf-4.2 --out /disk3/call_snp/plink/vcf81.8.60.maf.0.05.ld
+plink2 --vcf  /disk3/call_snp/plink/vcf81.${min_dp}.${max_dp}.maf.0.05.vcf --allow-extra-chr --set-all-var-ids @:#  --indep-pairwise 50 10 0.1  --out /disk3/call_snp/plink/vcf81.${min_dp}.${max_dp}.maf.0.05.ld
+plink2 --vcf /disk3/call_snp/plink/vcf81.${min_dp}.${max_dp}.maf.0.05.vcf --allow-extra-chr --set-all-var-ids @:# --rm-dup force-first --extract /disk3/call_snp/plink/vcf81.${min_dp}.${max_dp}.maf.0.05.ld.prune.in --recode vcf-4.2 --out /disk3/call_snp/plink/vcf81.${min_dp}.${max_dp}.maf.0.05.ld
 
 
 
