@@ -28,7 +28,6 @@ Scripts for Zhang et al. (2025): *Interspecific introgression mitigates climate 
 
 - **PSMC.sh**
 
-
 ---
 
 ## 4. Hybrid test
@@ -39,11 +38,11 @@ Scripts for Zhang et al. (2025): *Interspecific introgression mitigates climate 
 
 ---
 
-## 4. Introgression Analysis
+## 5. Introgression Analysis
 
 - **msmove_sim.sh**: Generates training data through coalescent simulations using parameters inferred from Fastsimcoal2.
 - **FILET.sh**: Identifies introgressed genomic regions using FILET.
-
+- **f_d.sh**: Estimated introgression using fd statistic in 1-kb windows using ABBABABAwindows.py81
 ---
 
 ## 6. Ecological Analysis
@@ -60,19 +59,26 @@ Scripts for Zhang et al. (2025): *Interspecific introgression mitigates climate 
 
 ---
 
-## 8. Alleleshift
+## 8. Haplotype and cline analysis
+
+- **cline_plot.r**
+- **haplotype_plot.r**
+
+---
+
+## 9. Alleleshift
 
 - **Allele_frequency_shifts_analysis.R**: Models the rate of allele frequency change under future climate scenarios.
 
 ---
 
-## 9. Genetic Offset Analysis
+## 10. Genetic Offset Analysis
 
 - **Genetic_offset_analysis.R**: Calculates genetic offset using two methods: gradient forest and geometric offset approaches.
 
 ---
 
-## 10. SLiM4 Simulation Analysis
+## 11. SLiM4 Simulation Analysis
 
 - **mig.txt**: Migration matrix derived from Fastsimcoal2 demographic inference.
 - **env_example_data.txt**: Linear climate change input used to simulate future warming.
@@ -81,10 +87,14 @@ Scripts for Zhang et al. (2025): *Interspecific introgression mitigates climate 
 
 ---
 
-## 11. Landscape connectivity analysis
+## 12. Landscape connectivity analysis
 
 - **Landscape_connectivity_analysis.R**: Tests a set of alternative hypotheses regarding landscape 
 connectivity
 
-## 12. Selscan
+---
+
+## 13. Selscan
 - **Selscan.sh**: Tests adaptive introgression signals
+
+---
