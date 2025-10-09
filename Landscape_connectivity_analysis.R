@@ -9,8 +9,6 @@ library(geosphere)
 #####################################################
 #############Load landscape features layers###########
 #####################################################
-
-
 # Land use layers 
 land_list=list.files(path="./resistance/land_cover",pattern = "^current.*tif$",full.names = T)
 land_raster=stack(land_list)
@@ -52,8 +50,6 @@ rownames(matrix)=c("2","3","5","8","10","11","14","18","21","24","25","26","27")
 colnames(matrix)=rownames(matrix)
 fst_dist=matrix
 
-
-
 # Sample information
 info=read.csv("./info.csv")[,c("long","lat","site_number","pop")]%>%unique()
 rownames(info)=info$site_number  
@@ -70,8 +66,6 @@ info[rownames(fst_dist),c("long","lat")]
 JULIA_HOME <- "/home/prunella/HIC_data_flow/phylonet/julia-1.7.0/julia-1.7.0/bin"
 JuliaCall::julia_setup(JULIA_HOME)
 
-cl <- makePSOCKcluster(30)
-registerDoParallel(cl)
 
 jl.inputs <- jl.prep(n.Pops = length(spdf),
                      response = lower(fst_dist),
@@ -82,15 +76,11 @@ jl.inputs <- jl.prep(n.Pops = length(spdf),
 GA.inputs <- GA.prep(ASCII.dir = stack(climate_layer,topo,land_cover),
                      Results.dir = "./resistance/result/",
                      min.cat = 1,max.cat = 100,max.cont = 100,
-                     method = "AIC",seed = 555,parallel=cl,quiet = TRUE,maxiter=30)
-
-# Export info to cluster
-clusterExport(cl=cl,varlist=c("jl.inputs","GA.inputs","climate_layer","topo","land_cover","fst_dist","river_layer")) # list everything you call in ro GA.inputs and gdist
-clusterEvalQ(cl=cl, .libPaths("/home/sparrow/.conda/envs/rgdal/lib/R/library")) # set path to where your R library is
-clusterCall(cl=cl, library, package = "ResistanceGA", character.only = TRUE)
+                     method = "AIC",seed = 555,parallel=cl)
 
 
-jl.optim.m <- MS_optim(jl.inputs = jl.inputs,
+####Generate resistance surface for each of the following landscape features
+jl.optim.m <- SS_optim(jl.inputs = jl.inputs,
                     GA.inputs = GA.inputs)
 
 stopCluster(cl)
@@ -189,153 +179,4 @@ aic_2=extractAIC(model_lc_2_aic);aic_2
 aic_3=extractAIC(model_lc_3_aic);aic_3
 aic_4=extractAIC(model_lc_4_aic);aic_4
 aic_5=extractAIC(model_lc_5_aic);aic_5
-
-        
-##############################################
-###Prediction under current conditions###
-##############################################
-
-GA.inputs <- GA.prep(ASCII.dir = stack(climate_layer,topo),
-                     Results.dir = "./resistance/result/Results/",
-                     min.cat = 1,max.cat = 100,max.cont = 100,
-                     method = "AIC",seed = 555,parallel=cl,quiet = TRUE,maxiter=30)
-jl.optim.m <- MS_optim(jl.inputs = jl.inputs,
-                     GA.inputs = GA.inputs)         
-jl.out <- Run_CS.jl(jl.inputs = jl.inputs,
-                    r = "./resistance/result/Results/elevation.slope.asc",
-                    CurrentMap = TRUE,
-                    output = 'raster',
-                    EXPORT.dir = "./resistance/result/Results/")
-
-###############################################
-###Prediction under future climate scenarios ##
-###############################################
-
-PARM=c(7,4.086941,93.58588,1,2.031101,56.33411,1,7.116264,46.27791,3,6.664063,78.34327,3,7.209217,99.44295,1,8.109725,23.13104)
-IPSL_2070_585=raster::stack("./2070/IPSL/chelsa.v2.1.2070.IPSL.ssp585.bio1_19.resample.tif")
-IPSL_2070_585
-var=c("bio_4","bio_10","bio_11","bio_17")
-names(IPSL_2070_585)=paste0("bio_",1:19)
-IPSL_2070_585_pre=subset(IPSL_2070_585,var)
-IPSL_2070_585_pre_c=crop(IPSL_2070_585_pre,range)
-IPSL_2070_585_pre_m=mask(IPSL_2070_585_pre_c,range)
-
-
-GA.inputs.IPSL_2070_585 <- GA.prep(ASCII.dir = stack(IPSL_2070_585_pre_m,topo),
-                                   Results.dir = "./resistance/result/Results/ipsl_2070_585/",
-                                   maxiter = 20,
-                                   method = "AIC",
-                                   parallel = 4)  
-
-
-trans.IPSL_2070_585=Combine_Surfaces(PARM=PARM, 
-                                     jl.inputs = jl.inputs,
-                                     GA.inputs=GA.inputs.IPSL_2070_585, 
-                                     out='./resistance/result/Results/ipsl_2070_585/',
-                                     File.name='ipsl_2070_585', 
-                                     rescale = TRUE, 
-                                     p.contribution = T)
-
-#RunCS
-jl.out.IPSL_2070_585 <- Run_CS.jl(jl.inputs = jl.inputs,
-                                  r = "./resistance/result/Results/ipsl_2070_585/ipsl_2070_585.asc",
-                                  CurrentMap = TRUE,
-                                  output = 'raster',
-                                  EXPORT.dir = "./resistance/result/Results/ipsl_2070_585/")
-
-#MRI
-MRI_2070_585=raster::stack("./2070/MRI/chelsa.v2.1.2070.MRI.ssp585.bio1_19.resample.tif")
-names(MRI_2070_585)=paste0("bio_",1:19)
-MRI_2070_585_pre=subset(MRI_2070_585,var)
-MRI_2070_585_pre_c=crop(MRI_2070_585_pre,range)
-MRI_2070_585_pre_m=mask(MRI_2070_585_pre_c,range)
-
-
-GA.inputs.MRI_2070_585 <- GA.prep(ASCII.dir = stack(MRI_2070_585_pre_m,topo),
-                                  Results.dir = "./resistance/result/Results/mri_2070_585/",
-                                  maxiter = 5,
-                                  method = "AIC",
-                                  parallel = 4)  
-
-
-trans.MRI_2070_585=Combine_Surfaces(PARM=PARM,
-                                    jl.inputs = jl.inputs,
-                                    GA.inputs=GA.inputs.MRI_2070_585, 
-                                    out='./resistance/result/Results/mri_2070_585/',
-                                    File.name='mri_2070_585', 
-                                    rescale = TRUE, 
-                                    p.contribution = T)
-
-#RunCS
-jl.out.MRI_2070_585 <- Run_CS.jl(jl.inputs = jl.inputs,
-                                 r = "./resistance/result/Results/mri_2070_585/mri_2070_585.asc",
-                                 CurrentMap = TRUE,
-                                 output = 'raster',
-                                 EXPORT.dir = "./resistance/result/Results/mri_2070_585/")
-
-
-
-######################
-###2100
-###################
-IPSL_2100_585=raster::stack("./2100/IPSL/chelsa.v2.1.2100.IPSL.ssp585.bio1_19.resample.tif")
-IPSL_2100_585
-var=c("bio_4","bio_10","bio_11","bio_17")
-names(IPSL_2100_585)=paste0("bio_",1:19)
-IPSL_2100_585_pre=subset(IPSL_2100_585,var)
-IPSL_2100_585_pre_c=crop(IPSL_2100_585_pre,range)
-IPSL_2100_585_pre_m=mask(IPSL_2100_585_pre_c,range)
-
-
-GA.inputs.IPSL_2100_585 <- GA.prep(ASCII.dir = stack(IPSL_2100_585_pre_m,topo),
-                                   Results.dir = "./resistance/result/Results/ipsl_2100_585/",
-                                   maxiter = 20,
-                                   method = "AIC",
-                                   parallel = 4)  
-
-
-trans.IPSL_2100_585=Combine_Surfaces(PARM=PARM, 
-                                     jl.inputs = jl.inputs,
-                                     GA.inputs=GA.inputs.IPSL_2100_585, 
-                                     out='./resistance/result/Results/ipsl_2100_585/',
-                                     File.name='ipsl_2100_585', 
-                                     rescale = TRUE, 
-                                     p.contribution = T)
-
-#RunCS
-jl.out.IPSL_2100_585 <- Run_CS.jl(jl.inputs = jl.inputs,
-                                  r = "./resistance/result/Results/ipsl_2100_585/ipsl_2100_585.asc",
-                                  CurrentMap = TRUE,
-                                  output = 'raster',
-                                  EXPORT.dir = "./resistance/result/Results/ipsl_2100_585/")
-
-#MRI
-MRI_2100_585=raster::stack("./2100/MRI/chelsa.v2.1.2100.MRI.ssp585.bio1_19.resample.tif")
-names(MRI_2100_585)=paste0("bio_",1:19)
-MRI_2100_585_pre=subset(MRI_2100_585,var)
-MRI_2100_585_pre_c=crop(MRI_2100_585_pre,range)
-MRI_2100_585_pre_m=mask(MRI_2100_585_pre_c,range)
-
-
-GA.inputs.MRI_2100_585 <- GA.prep(ASCII.dir = stack(MRI_2100_585_pre_m,topo),
-                                  Results.dir = "./resistance/result/Results/mri_2100_585/",
-                                  maxiter = 5,
-                                  method = "AIC",
-                                  parallel = 4)  
-
-
-trans.MRI_2100_585=Combine_Surfaces(PARM=PARM, 
-                                    jl.inputs = jl.inputs,
-                                    GA.inputs=GA.inputs.MRI_2100_585, 
-                                    out='./resistance/result/Results/mri_2100_585/',
-                                    File.name='mri_2100_585', 
-                                    rescale = TRUE, 
-                                    p.contribution = T)
-
-#RunCS
-jl.out.MRI_2100_585 <- Run_CS.jl(jl.inputs = jl.inputs,
-                                 r = "./resistance/result/Results/mri_2100_585/mri_2100_585.asc",
-                                 CurrentMap = TRUE,
-                                 output = 'raster',
-                                 EXPORT.dir = "./resistance/result/Results/mri_2100_585/")
 
