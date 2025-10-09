@@ -1,50 +1,45 @@
 library(sf)
 library(geosphere)
 library(tidyverse)
-data=read.csv("C:/Users/qu_la/Desktop/hkqm整理/返修/af_bio.csv")
+data=read.csv("C:/Users/qu_la/Desktop/hkqm/af_bio.csv")
 
 target=c("HiC_scaffold_5.29849774","HiC_scaffold_5.29977431","HiC_scaffold_5.44065996","HiC_scaffold_19.55471519")
 data=data[,c("long","lat","pop","site_number",target)]
 
-#set transect
+#set up the transect which follows the elevation and climate gradient
 point_A <- c(70.818, 48.744) 
 point_B <- c(118.842, 22.35) 
 samples = data[,c("long","lat","site_number")]
 samples_sf <- sf::st_as_sf(samples, coords = c("long", "lat"), crs = 4326)
-plot(samples_sf)
 transect_line <- st_sfc(st_linestring(rbind(point_A, point_B)), crs = 4326)
-plot(transect_line,add=T)
-plot(transect_line)
+
+#project sampling site onto transect line
 projected_points <-sf:: st_nearest_points(samples_sf, transect_line) %>%
-  st_cast("POINT") %>% .[seq(2, length(.), by = 2)]  # 取最近点在transect线上的位置
+  st_cast("POINT") %>% .[seq(2, length(.), by = 2)] 
 
 distances_km <- geosphere::distGeo(matrix(rep(point_A, length(projected_points)), 
                                           ncol = 2, byrow = TRUE),
                                    st_coordinates(projected_points)) / 1000
-
-
 samples$transect_distance_km <- distances_km
-
 samples=arrange(samples,transect_distance_km)
 samples_info=dplyr::left_join(samples,data,"site_number")
 
 samples_info$label <- samples_info$transect_distance_km
-samples_info$label <- as.character(round(samples_info$label, 0))  # 转为字符方便 ggplot 显示
+samples_info$label <- as.character(round(samples_info$label, 0))
 samples_info$HiC_scaffold_5.29977431=1-samples_info$HiC_scaffold_5.29977431
-
 samples_info_long <- tidyr::pivot_longer(samples_info,
                                          cols=target,
                           # cols = colnames(samples_info)[9:708],
                           names_to = "Variable",
                           values_to = "Value")
 
-str(samples_info_long)
+###plot cline
 samples_info_long$label=as.numeric(samples_info_long$label)
 ggplot()+
 stat_smooth(
     data=filter(samples_info_long,pop!="western"),
     aes(y=Value,x=label,
-        group = Variable, color= Variable   # 按pop分组
+        group = Variable, color= Variable  
        ),
     method = "glm",
     method.args = list(family = "binomial"),
@@ -61,3 +56,4 @@ stat_smooth(
   theme(
     panel.grid = element_blank()) +
   ylab("Allele frequency")+xlab("Site")
+
