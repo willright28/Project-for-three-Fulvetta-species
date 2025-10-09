@@ -1,6 +1,7 @@
 #!/bin/bash
-
-python VCF_processing/parseVCF.py -i /mnt/disk1/martin/vcf81.8.60.maf.0.05.vcf -o /mnt/disk1/martin//output.geno.gz
+####This script scans for introgressed regions with 1 kb sliding windows.
+###See https://github.com/simonhmartin/genomics_general?tab=readme-ov-file#abba-baba-statistics-in-sliding-windows for more details on VCF_processing/parseVCF.py.
+python VCF_processing/parseVCF.py -i /mnt/disk1/martin/vcf81.8.60.maf.0.05.vcf -o /mnt/disk1/martin/output.geno.gz
 
 python3 /mnt/disk1/martin/genomics_general-master/ABBABABAwindows.py \
 -g /mnt/disk1/martin/output.geno.gz -f diplo \
