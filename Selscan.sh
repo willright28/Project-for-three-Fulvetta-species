@@ -1,6 +1,7 @@
 #!/bin/bash
 #######################ihs########################
-
+#used Selscan to calculate iHS and nSL statistics
+###
 cd /disk3/hkqm/select_sweep
 while read line
 do
@@ -38,10 +39,6 @@ do
  done < /disk3/hkqm/phase/chr_filter.txt
 
  wait
-
- /home/share/selscan/bin/linux/norm --ihs --files /disk3/hkqm/select_sweep/ihs_eastern/*.eastern.ihs.ihs.out --bp-win --winsize 100000 
- /home/share/selscan/bin/linux/norm --ihs --files /disk3/hkqm/select_sweep/ihs_western/*.western.ihs.ihs.out --bp-win --winsize 100000 
- /home/share/selscan/bin/linux/norm --ihs --files /disk3/hkqm/select_sweep/ihs_central/*.central.ihs.ihs.out --bp-win --winsize 100000 
 
 #########################nsl##############################
 !/bin/bash
