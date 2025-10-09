@@ -31,7 +31,7 @@ pts_hueti = pts_hueti[, c("sp", "x", "y")]
 
 ### fratercula vs hueti
 
-# NOT: Full environmental space comparison (tests niche equivalency/divergence)
+# NOT: Full environmental space comparison (tests niche equivalency)
 full_not <- humboldt.doitall(
   inname = "fratercula.hueti.not",
   env1 = env.points, env2 = env.points,
@@ -47,7 +47,7 @@ full_not <- humboldt.doitall(
   run.silent = FALSE, ncores = 10
 )
 
-# NDT: Shared environmental space comparison (tests niche evolution/divergence)
+# NDT: Shared environmental space comparison (tests niche divergence)
 shared_ndt <- humboldt.doitall(
   inname = "fratercula.hueti.ndt",
   env1 = env.points, env2 = env.points,
@@ -130,3 +130,4 @@ shared_ndt_3 <- humboldt.doitall(
   p.overlap = TRUE, p.boxplot = FALSE, p.scatter = TRUE,
   run.silent = FALSE, ncores = 8, color.ramp = 4
 )
+
