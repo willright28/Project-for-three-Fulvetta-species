@@ -1,6 +1,6 @@
 # Project for Three Fulvetta Species
 
-Scripts for Zhang et al. (2025): *Interspecific introgression mitigates climate change risk of the mountainous birds*
+Scripts for Zhang et al. (2025): *Hybridization mitigates climate change risk in mountainous birds*
 
 ---
 ## 0. SNP calling and filtering
